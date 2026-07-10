@@ -4,7 +4,7 @@ from fastapi import APIRouter
 from app.llm import chat_completion
 from app.schemas import ChatRequest,ChatResponse
 
-router = APIRouter()
+router = APIRouter(prefix="/api",tags=["tools"])
 
 @router.post("/tool-chat",response_model=ChatResponse)
 async def tool_chat(request: ChatRequest):

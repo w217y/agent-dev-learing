@@ -5,18 +5,20 @@ from fastapi import FastAPI,Request
 from fastapi.responses import JSONResponse
 from app.api.routes_chat import router as chat_router
 from app.api.routes_extract import router as extract_router
-
+from app.api.routes_tools import router as tools_router
 
 app = FastAPI(title="Agent Dev Week 1 API")
 
 app.include_router(chat_router)
 app.include_router(extract_router)
+app.include_router(tools_router)
+
 
 @app.exception_handler(RuntimeError)
 async def runtime_exception_handler(request: Request, exc: RuntimeError):
     return JSONResponse(
         status_code=500,
-        content={"message": str(exc)},
+        content={"error": str(exc)},
     )
 
 @app.get("/health")
