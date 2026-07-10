@@ -21,3 +21,6 @@ venv/
 # OS
 .DS_Store
 Thumbs.db
+
+data/uploads/*
+!data/uploads/.gitkeep
