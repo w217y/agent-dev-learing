@@ -72,21 +72,24 @@ app/tools.py
 ```text
 app/api/routes_chat.py
 ```
+
 定义聊天相关接口：
-- `/chat`
-- `/chat_stream`
+- `/api/chat`
+- `/api/chat/stream`
 
 ```text
-app/api/routes_extract.py
+app/api/routes-extract.py
 ```
+
 定义结构化任务提取接口
-- `/extrac_task`
+- `/api/extrac-task`
 
 ```text
-app/api/routes_tools.py
+app/api/routes-tools.py
 ```
 定义工具聊天接口文件。
-但当前main.py还没有注册该路由，所以`/tool-chat`当前暂时不可用。
+当前main.py已经注册该路由，
+所以`/api/tool-chat`当前暂时不可用。
 
 ```text
 tests/
@@ -160,7 +163,7 @@ OPENAI_MODEL=gpt-5.5
 
 2.普通聊天接口
 
-`POST /chat`
+`POST /api/chat`
 
 请求示例:
 ```json
@@ -178,7 +181,7 @@ OPENAI_MODEL=gpt-5.5
 windows cmd curl 示例:
 
 ```
-curl -X POST "http://127.0.0.1:6002/chat" -H "accept: application/json" -H "Content-Type: application/json" -d "{\"messages\":[{\"role\":\"user\",\"content\":\"用一句话解释什么是 AI Agent\"}],\"temperature\":0.2}"
+curl -X POST "http://127.0.0.1:6002/api/chat" -H "accept: application/json" -H "Content-Type: application/json" -d "{\"messages\":[{\"role\":\"user\",\"content\":\"用一句话解释什么是 AI Agent\"}],\"temperature\":0.2}"
 ```
 
 返回示例:
@@ -191,7 +194,7 @@ curl -X POST "http://127.0.0.1:6002/chat" -H "accept: application/json" -H "Cont
 
 3.流式聊天接口
 
-`POST /chat_stream`
+`POST /api/chat_stream`
 
 当前版本使用的是伪流式输出
 ```python
@@ -202,12 +205,12 @@ for char in text:
 
 请求示例:
 ```cmd
-curl -X POST "http://127.0.0.1:6002/chat_stream" -H "accept: application/json" -H "Content-Type: application/json" -d "{\"messages\":[{\"role\":\"user\",\"content\":\"介绍一下 AI\"}],\"temperature\":0.2}"
+curl -X POST "http://127.0.0.1:6002/api/chat_stream" -H "accept: application/json" -H "Content-Type: application/json" -d "{\"messages\":[{\"role\":\"user\",\"content\":\"介绍一下 AI\"}],\"temperature\":0.2}"
 ```
 
 4.结构化任务提接口
 
-`POST /extract_task`
+`POST /api/extract_task`
 
 该接口用于让模型按照固定结构返回`JSON`.
 
@@ -220,7 +223,7 @@ curl -X POST "http://127.0.0.1:6002/chat_stream" -H "accept: application/json" -
 
 windows cmd curl 示例:
 ```cmd
-curl -X POST "http://127.0.0.1:6002/extract_task" -H "accept: application/json" -H "Content-Type: application/json" -d "{\"text\":\"帮我给财务写一封邮件，说明这张发票需要重新审核，比较紧急。\"}"
+curl -X POST "http://127.0.0.1:6002/api/extract_task" -H "accept: application/json" -H "Content-Type: application/json" -d "{\"text\":\"帮我给财务写一封邮件，说明这张发票需要重新审核，比较紧急。\"}"
 ```
 
 返回示例:
@@ -249,14 +252,17 @@ needs_tool  是否需要调用工具
 
 里面定义了:
 
-`POST /tool-chat`
+`POST /api/tool-chat`
 
-但是当前`app/main.py`还没有注册:
+当前`app/main.py`注册了:
 ```python
 from app.api.routes_tools import router as tools_router
 app.include_router(tools_router)
 ```
-所以当前版本中`/tool-chat`暂时不会出现在`/docs`中,也不能直接访问
+不过当前版本的 Tool Chat 仍然是占位实现，内部暂时复用普通聊天逻辑。
+本阶段重点是完成工具函数、工具 schema、安全边界和路由注册。
+完整 Tool Calling Loop 会在后续版本实现。
+
 
 ## 本地工具函数
 当前项目实现了两个本地工具.
