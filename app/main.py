@@ -10,7 +10,7 @@ from app.api.routes_chat import router as chat_router
 from app.api.routes_extract import router as extract_router
 from app.api.routes_tools import router as tools_router
 from app.api.routes_documents import router as documents_router
-
+from app.api.routes_rag import router as rag_router
 
 
 @asynccontextmanager
@@ -35,13 +35,11 @@ async def health_check():
     return {"status":"ok"}
 
 
-
-
 app.include_router(chat_router)
 app.include_router(extract_router)
 app.include_router(tools_router)
 app.include_router(documents_router)
-
+app.include_router(rag_router)
 
 if __name__ == "__main__":
     uvicorn.run(
