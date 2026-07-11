@@ -22,5 +22,10 @@ venv/
 .DS_Store
 Thumbs.db
 
+# sample docs: only keep selected public sample files
+/data/sample_docs/*
+!/data/sample_docs/报销制度.md
+
+# uploads
 data/uploads/*
 !data/uploads/.gitkeep
