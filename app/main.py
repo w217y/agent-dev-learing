@@ -11,6 +11,8 @@ from app.api.routes_extract import router as extract_router
 from app.api.routes_tools import router as tools_router
 from app.api.routes_documents import router as documents_router
 
+
+
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     init_db()
@@ -31,6 +33,8 @@ async def runtime_exception_handler(request: Request, exc: RuntimeError):
 @app.get("/health")
 async def health_check():
     return {"status":"ok"}
+
+
 
 
 app.include_router(chat_router)

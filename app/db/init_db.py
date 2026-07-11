@@ -1,4 +1,6 @@
 from sqlalchemy import text
+
+from app.config import settings
 from app.db.session import engine
 
 def init_db():
@@ -16,7 +18,7 @@ def init_db():
         )  
         """))
 
-        conn.execute(text("""
+        conn.execute(text(f"""
         CREATE TABLE IF NOT EXISTS document_chunks (
             id SERIAL PRIMARY KEY,
             document_id INTEGER REFERENCES documents(id) ON DELETE CASCADE,
@@ -24,7 +26,7 @@ def init_db():
             content TEXT NOT NULL,
             token_count INTEGER,
             source TEXT,
-            embedding vector(512),
+            embedding vector({settings.embedding_dim}),
             created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
         )
         """))
