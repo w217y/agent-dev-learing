@@ -353,3 +353,8 @@ tests/test_tools.py     测试本地工具函数
 7. pytest 如何测试接口、schema 和工具函数
 8. README 为什么也是项目交付的一部分
 ```
+
+
+<!-- docs: verify github contribution email -->
+
+_Last updated: 2026-07-11_
