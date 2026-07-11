@@ -1,0 +1,116 @@
+{"question":"差旅住宿标准是多少？","expected_keywords":["一线城市","600","二线城市","400","其他城市","300"],"expected_source":"expense_policy.md"}
+{"question":"一线城市出差住宿每天最多报销多少钱？","expected_keywords":["一线城市","600"],"expected_source":"expense_policy.md"}
+{"question":"二线城市住宿报销上限是多少？","expected_keywords":["二线城市","400"],"expected_source":"expense_policy.md"}
+{"question":"其他城市住宿标准是多少？","expected_keywords":["其他城市","300"],"expected_source":"expense_policy.md"}
+{"question":"住宿费用按照什么计算？","expected_keywords":["实际入住天数"],"expected_source":"expense_policy.md"}
+{"question":"住宿超标需要谁审批？","expected_keywords":["直属主管","审批"],"expected_source":"expense_policy.md"}
+{"question":"连续住宿超标超过 3 天需要谁审批？","expected_keywords":["部门负责人","审批"],"expected_source":"expense_policy.md"}
+{"question":"住宿发票抬头有什么要求？","expected_keywords":["公司抬头","一致"],"expected_source":"expense_policy.md"}
+{"question":"民宿或短租房能不能直接报销？","expected_keywords":["非标准住宿","提前审批"],"expected_source":"expense_policy.md"}
+{"question":"报销需要哪些材料？","expected_keywords":["发票","费用明细","审批单","证明材料"],"expected_source":"expense_policy.md"}
+{"question":"差旅报销需要提供什么材料？","expected_keywords":["行程单"],"expected_source":"expense_policy.md"}
+{"question":"住宿报销需要提供什么证明？","expected_keywords":["酒店水单","入住证明"],"expected_source":"expense_policy.md"}
+{"question":"交通报销需要提供哪些票据？","expected_keywords":["车票","机票行程单","网约车行程截图"],"expected_source":"expense_policy.md"}
+{"question":"客户接待报销需要上传什么？","expected_keywords":["接待申请","消费明细"],"expected_source":"expense_policy.md"}
+{"question":"办公采购报销需要提供什么？","expected_keywords":["采购申请","验收记录"],"expected_source":"expense_policy.md"}
+{"question":"会议费用报销需要提供哪些材料？","expected_keywords":["会议通知","参会名单","会议照片"],"expected_source":"expense_policy.md"}
+{"question":"如果报销材料缺失会怎样？","expected_keywords":["财务","退回","补充材料","重新提交"],"expected_source":"expense_policy.md"}
+{"question":"发票不合规怎么办？","expected_keywords":["退回","重新提交","再次审核"],"expected_source":"expense_policy.md"}
+{"question":"发票抬头不正确怎么处理？","expected_keywords":["财务","退回"],"expected_source":"expense_policy.md"}
+{"question":"发票税号错误会怎样？","expected_keywords":["税号","错误","退回"],"expected_source":"expense_policy.md"}
+{"question":"发票金额和申请金额不一致怎么办？","expected_keywords":["解释","修改"],"expected_source":"expense_policy.md"}
+{"question":"发票内容和费用类型不一致怎么办？","expected_keywords":["重新开票"],"expected_source":"expense_policy.md"}
+{"question":"重复提交电子发票会怎样？","expected_keywords":["重复提交","风险","拒绝"],"expected_source":"expense_policy.md"}
+{"question":"供应商无法重新开票怎么办？","expected_keywords":["供应商说明"],"expected_source":"expense_policy.md"}
+{"question":"费用发生后多久内需要提交报销？","expected_keywords":["30 天内"],"expected_source":"expense_policy.md"}
+{"question":"超过 60 天提交报销需要谁确认？","expected_keywords":["部门负责人","确认"],"expected_source":"expense_policy.md"}
+{"question":"离职员工应该什么时候完成报销？","expected_keywords":["最后工作日"],"expected_source":"expense_policy.md"}
+{"question":"客户接待超过 1000 元需要谁审批？","expected_keywords":["部门负责人","审批"],"expected_source":"expense_policy.md"}
+{"question":"客户接待超过 3000 元需要谁审批？","expected_keywords":["业务负责人","审批"],"expected_source":"expense_policy.md"}
+{"question":"哪些费用不允许作为普通接待费用报销？","expected_keywords":["礼品","购物卡","现金"],"expected_source":"expense_policy.md"}
+{"question":"入职满一年后员工可以申请什么假？","expected_keywords":["年假"],"expected_source":"leave_policy.md"}
+{"question":"工龄满 1 年不满 10 年有几天年假？","expected_keywords":["5 天","年假"],"expected_source":"leave_policy.md"}
+{"question":"工龄满 10 年不满 20 年有几天年假？","expected_keywords":["10 天","年假"],"expected_source":"leave_policy.md"}
+{"question":"工龄满 20 年及以上有几天年假？","expected_keywords":["15 天","年假"],"expected_source":"leave_policy.md"}
+{"question":"年假按照什么周期计算？","expected_keywords":["自然年度"],"expected_source":"leave_policy.md"}
+{"question":"连续年假超过 5 个工作日需要谁审批？","expected_keywords":["部门负责人","二次审批"],"expected_source":"leave_policy.md"}
+{"question":"病假需要在哪里提交申请？","expected_keywords":["系统","提交申请"],"expected_source":"leave_policy.md"}
+{"question":"连续病假超过几天需要医院证明？","expected_keywords":["超过 2 天","医院证明","病历材料"],"expected_source":"leave_policy.md"}
+{"question":"病假证明应包含哪些内容？","expected_keywords":["就诊日期","医生建议","医院盖章"],"expected_source":"leave_policy.md"}
+{"question":"紧急病假应该先通知谁？","expected_keywords":["直属主管"],"expected_source":"leave_policy.md"}
+{"question":"返岗后多久内需要补交病假材料？","expected_keywords":["2 个工作日"],"expected_source":"leave_policy.md"}
+{"question":"没有提供病假证明可能会怎样处理？","expected_keywords":["事假处理"],"expected_source":"leave_policy.md"}
+{"question":"事假原则上需要提前多久提交？","expected_keywords":["提前 1 个工作日"],"expected_source":"leave_policy.md"}
+{"question":"连续事假超过 3 个工作日需要谁审批？","expected_keywords":["部门负责人","审批"],"expected_source":"leave_policy.md"}
+{"question":"连续事假超过 10 个工作日需要谁备案？","expected_keywords":["HR","备案"],"expected_source":"leave_policy.md"}
+{"question":"事假期间工资如何处理？","expected_keywords":["不计发","工资"],"expected_source":"leave_policy.md"}
+{"question":"婚假申请需要上传什么证明？","expected_keywords":["结婚证明"],"expected_source":"leave_policy.md"}
+{"question":"产假和陪产假按照什么政策执行？","expected_keywords":["国家","地方政策"],"expected_source":"leave_policy.md"}
+{"question":"调休需要有什么记录？","expected_keywords":["加班记录"],"expected_source":"leave_policy.md"}
+{"question":"调休原则上应在多久内使用？","expected_keywords":["3 个月内"],"expected_source":"leave_policy.md"}
+{"question":"调休余额以哪里为准？","expected_keywords":["系统记录"],"expected_source":"leave_policy.md"}
+{"question":"普通请假由谁审批？","expected_keywords":["直属主管","审批"],"expected_source":"leave_policy.md"}
+{"question":"连续请假超过 5 个工作日需要什么审批？","expected_keywords":["部门负责人","二次审批"],"expected_source":"leave_policy.md"}
+{"question":"审批未通过可以休假吗？","expected_keywords":["不能","正常工作时间出勤"],"expected_source":"leave_policy.md"}
+{"question":"员工提前返岗时需要做什么？","expected_keywords":["销假","变更申请"],"expected_source":"leave_policy.md"}
+{"question":"考勤异常应在什么时候处理？","expected_keywords":["当月考勤关闭前"],"expected_source":"leave_policy.md"}
+{"question":"员工应该多久核对一次考勤和假期余额？","expected_keywords":["每月","核对"],"expected_source":"leave_policy.md"}
+{"question":"假期余额以哪里记录为准？","expected_keywords":["系统记录"],"expected_source":"leave_policy.md"}
+{"question":"忘记提交请假申请怎么办？","expected_keywords":["补交申请","说明原因"],"expected_source":"leave_policy.md"}
+{"question":"请假期间涉及客户交付应该怎么处理？","expected_keywords":["备份人员","提前安排"],"expected_source":"leave_policy.md"}
+{"question":"VPN 无法连接应该先检查什么？","expected_keywords":["本地网络","客户端版本","账号密码","多因素认证"],"expected_source":"it_support_faq.md"}
+{"question":"VPN 提示证书过期怎么办？","expected_keywords":["联系 IT","更新证书"],"expected_source":"it_support_faq.md"}
+{"question":"VPN 提示账号锁定怎么办？","expected_keywords":["统一身份认证平台","解锁"],"expected_source":"it_support_faq.md"}
+{"question":"提交 VPN 工单需要附上什么？","expected_keywords":["错误截图","网络环境"],"expected_source":"it_support_faq.md"}
+{"question":"忘记邮箱密码怎么处理？","expected_keywords":["统一身份认证平台","密码重置"],"expected_source":"it_support_faq.md"}
+{"question":"邮箱密码重置需要通过什么验证身份？","expected_keywords":["手机号","多因素认证"],"expected_source":"it_support_faq.md"}
+{"question":"多次输错邮箱密码会怎样？","expected_keywords":["账号","临时锁定"],"expected_source":"it_support_faq.md"}
+{"question":"IT 会向员工索要明文密码吗？","expected_keywords":["不会","明文密码"],"expected_source":"it_support_faq.md"}
+{"question":"办公电脑蓝屏应该先记录什么？","expected_keywords":["错误代码"],"expected_source":"it_support_faq.md"}
+{"question":"电脑无法开机应该检查什么？","expected_keywords":["电源适配器","插座"],"expected_source":"it_support_faq.md"}
+{"question":"电脑损坏提交维修工单需要说明什么？","expected_keywords":["设备编号","故障现象","故障照片"],"expected_source":"it_support_faq.md"}
+{"question":"电脑维修周期较长时 IT 可以提供什么？","expected_keywords":["备用机"],"expected_source":"it_support_faq.md"}
+{"question":"普通员工默认有管理员权限吗？","expected_keywords":["默认没有","管理员权限"],"expected_source":"it_support_faq.md"}
+{"question":"安装开发工具需要提交什么申请？","expected_keywords":["软件安装申请"],"expected_source":"it_support_faq.md"}
+{"question":"软件安装申请需要说明哪些内容？","expected_keywords":["用途","软件名称","版本"],"expected_source":"it_support_faq.md"}
+{"question":"可以安装破解软件吗？","expected_keywords":["禁止","破解软件"],"expected_source":"it_support_faq.md"}
+{"question":"无法访问内部系统时应该先确认什么？","expected_keywords":["VPN","办公网络"],"expected_source":"it_support_faq.md"}
+{"question":"网络问题工单需要提供哪些信息？","expected_keywords":["访问地址","报错截图","发生时间"],"expected_source":"it_support_faq.md"}
+{"question":"申请业务系统权限需要谁审批？","expected_keywords":["直属主管","审批"],"expected_source":"it_support_faq.md"}
+{"question":"高权限账号需要谁审批？","expected_keywords":["系统负责人","审批"],"expected_source":"it_support_faq.md"}
+{"question":"员工可以使用他人账号登录系统吗？","expected_keywords":["不得","他人账号"],"expected_source":"it_support_faq.md"}
+{"question":"公司数据可以上传到个人网盘吗？","expected_keywords":["不得","外部网盘"],"expected_source":"it_support_faq.md"}
+{"question":"发现钓鱼邮件应该怎么办？","expected_keywords":["不要点击","转发","安全团队"],"expected_source":"it_support_faq.md"}
+{"question":"丢失电脑或手机时应该通知谁？","expected_keywords":["IT","直属主管"],"expected_source":"it_support_faq.md"}
+{"question":"影响全公司办公的问题是什么优先级？","expected_keywords":["最高优先级"],"expected_source":"it_support_faq.md"}
+{"question":"工单完成后员工可以做什么？","expected_keywords":["满意度评价"],"expected_source":"it_support_faq.md"}
+{"question":"当前知识库系统支持上传哪些文件格式？","expected_keywords":["PDF","Markdown","TXT"],"expected_source":"product_knowledge_base.md"}
+{"question":"上传文件后 documents 表初始状态是什么？","expected_keywords":["uploaded"],"expected_source":"product_knowledge_base.md"}
+{"question":"完成 ingest 后文档状态会变成什么？","expected_keywords":["indexed"],"expected_source":"product_knowledge_base.md"}
+{"question":"扫描版 PDF 为什么可能无法正确解析？","expected_keywords":["OCR","无法正确解析"],"expected_source":"product_knowledge_base.md"}
+{"question":"TXT 文件如何读取？","expected_keywords":["UTF-8"],"expected_source":"product_knowledge_base.md"}
+{"question":"PDF 文件使用什么工具提取文本？","expected_keywords":["pypdf"],"expected_source":"product_knowledge_base.md"}
+{"question":"chunk_size 表示什么？","expected_keywords":["最大长度"],"expected_source":"product_knowledge_base.md"}
+{"question":"overlap 表示什么？","expected_keywords":["重叠文本"],"expected_source":"product_knowledge_base.md"}
+{"question":"chunk 太小会有什么问题？","expected_keywords":["上下文不完整"],"expected_source":"product_knowledge_base.md"}
+{"question":"chunk 太大会有什么问题？","expected_keywords":["检索结果","不够精确"],"expected_source":"product_knowledge_base.md"}
+{"question":"embedding 是什么？","expected_keywords":["文本","数字向量"],"expected_source":"product_knowledge_base.md"}
+{"question":"文档 chunk 和用户问题都需要生成 embedding 吗？","expected_keywords":["文档 chunk","用户问题","embedding"],"expected_source":"product_knowledge_base.md"}
+{"question":"bge-small-zh-v1.5 的向量维度通常是多少？","expected_keywords":["512"],"expected_source":"product_knowledge_base.md"}
+{"question":"text-embedding-3-small 的常见维度是多少？","expected_keywords":["1536"],"expected_source":"product_knowledge_base.md"}
+{"question":"数据库中的 vector 维度必须满足什么条件？","expected_keywords":["模型输出维度","一致"],"expected_source":"product_knowledge_base.md"}
+{"question":"当前系统使用什么进行向量相似度检索？","expected_keywords":["pgvector"],"expected_source":"product_knowledge_base.md"}
+{"question":"当前检索 SQL 使用什么操作符计算 cosine distance？","expected_keywords":["<=>","cosine distance"],"expected_source":"product_knowledge_base.md"}
+{"question":"top_k 太大会有什么问题？","expected_keywords":["噪声","prompt 长度"],"expected_source":"product_knowledge_base.md"}
+{"question":"每个 chunk 为什么要保存 source 字段？","expected_keywords":["来源引用","调试检索质量"],"expected_source":"product_knowledge_base.md"}
+{"question":"知识库没有足够资料时系统应该怎么回答？","expected_keywords":["根据当前知识库资料，无法确认"],"expected_source":"product_knowledge_base.md"}
+{"question":"公司今年计划收购哪家公司？","expected_keywords":["无法确认"],"expected_source":null}
+{"question":"CEO 的私人电话是多少？","expected_keywords":["无法确认"],"expected_source":null}
+{"question":"明年公司一定会涨薪吗？","expected_keywords":["无法确认"],"expected_source":null}
+{"question":"公司下季度股票价格会涨到多少？","expected_keywords":["无法确认"],"expected_source":null}
+{"question":"董事长家的住址在哪里？","expected_keywords":["无法确认"],"expected_source":null}
+{"question":"公司是否已经决定裁员名单？","expected_keywords":["无法确认"],"expected_source":null}
+{"question":"客户的银行卡密码是多少？","expected_keywords":["无法确认"],"expected_source":null}
+{"question":"公司今年会不会上市？","expected_keywords":["无法确认"],"expected_source":null}
+{"question":"员工个人身份证号码是多少？","expected_keywords":["无法确认"],"expected_source":null}
+{"question":"公司未来三年的利润预测是多少？","expected_keywords":["无法确认"],"expected_source":null}
