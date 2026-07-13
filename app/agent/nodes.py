@@ -1,4 +1,6 @@
 from app.agent.state import AgentState
+from app.agent.tools import vector_search_tool
+
 
 def router_node(state: AgentState) -> AgentState:
     user_input = state["user_input"]
@@ -33,4 +35,18 @@ def final_node(state: AgentState) -> AgentState:
     return {
         **state,
         "steps": state.get("steps", []) + ["final"],
+    }
+
+
+def rag_node(state: AgentState)->AgentState:
+    result = vector_search_tool(state["user_input"],top_k= 5)
+
+    return {
+        **state,
+        "tool_name":"vector_search_tool",
+        "tool_input":{"qusetion":state["user_input"], "tok_5": 5},
+        "tool_result": result,
+        "answer":result["answer"],
+        "sources": result["sources"],
+        "steps": state.get("steps", []) + ["rag"],
     }

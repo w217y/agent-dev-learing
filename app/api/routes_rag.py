@@ -1,9 +1,7 @@
 from fastapi import APIRouter
 from pydantic import BaseModel, Field
-from app.rag.retriever import retrieve
+from app.rag.retriever import retrieve, retrieve_with_debug
 from app.rag.generator import generate_rag_answer
-
-MIN_RAG_SCORE = 0.45
 
 
 router = APIRouter(prefix="/api/rag",tags=["rag"])
@@ -21,24 +19,20 @@ async def retrieve_route(request: RagQueryRequest):
 
 @router.post("/query")
 async def rag_query(request: RagQueryRequest):
-    chunks = retrieve(request.question, top_k=request.top_k)
+    result = retrieve_with_debug(
+        request.question,
+        top_k=request.top_k,
+        min_score=request.min_score,
+    )
 
-    min_score = request.min_score if request.min_score is not None else MIN_RAG_SCORE
-    relevant_chunks = [
-        chunk for chunk in chunks
-        if chunk["score"] if not None and chunk["score"] >= min_score
-    ]
+    chunks = result["chunks"]
 
-    if not relevant_chunks:
+    if not chunks:
         return {
-        "answer": "根据当前知识库资料，无法确认。",
-        "sources": [],
-        "debug": {
-            "min_score": min_score,
-            "retrieved_count": len(chunks),
-            "max_score": max([chunk["score"] for chunk in chunks], default=None),
-        },
-    }
+            "answer": "根据当前知识库资料，无法确认。",
+            "sources": [],
+            "debug": result["debug"],
+        }
 
     answer = generate_rag_answer(request.question, chunks)
 
@@ -47,16 +41,11 @@ async def rag_query(request: RagQueryRequest):
             "filename": chunk["filename"],
             "source": chunk["source"],
             "score": chunk["score"],
-        } for chunk in relevant_chunks
+        } for chunk in chunks
     ]
 
     return {
         "answer": answer,
         "sources": sources,
-        "debug": {
-            "min_score": min_score,
-            "retrieved_count": len(chunks),
-            "used_count": len(relevant_chunks),
-            "max_score": max([chunk["score"] for chunk in chunks], default=None),
-        },
+        "debug": result["debug"],
     }
