@@ -16,6 +16,7 @@ class Settings(BaseSettings):
     database_url: str
     upload_dir: str = "data/uploads"
     top_k: int = 5
+    min_rag_score: float = 0.45
 
     model_config = SettingsConfigDict(
         env_file=".env",
