@@ -1,11 +1,16 @@
 
 from typing import Literal
 from pydantic import BaseModel, Field
-from openai import OpenAI
+# from openai import OpenAI
 
 from app.config import settings
 from app.agent.prompts import ROUTER_SYSTEM_PROMPT
-client = OpenAI(api_key=settings.openai_api_key,base_url=settings.openai_api_base_url)
+from langfuse.openai import openai
+
+client = openai.OpenAI(
+    api_key=settings.openai_api_key,
+    base_url=settings.openai_api_base_url,
+)
 
 class RouteDecision(BaseModel):
     intent: Literal[

@@ -2,15 +2,17 @@
 import json
 import logging 
 
-from openai import OpenAI
+from langfuse import openai
 from app.config import settings
 from app.schemas import ExtractedTask
 from app.tools import calculator,get_current_time
 
 logger = logging.getLogger(__name__)
 
-client = OpenAI(api_key=settings.openai_api_key,base_url=settings.openai_api_base_url)
-
+client = openai.OpenAI(
+    api_key=settings.openai_api_key,
+    base_url=settings.openai_api_base_url,
+)
 def chat_completion(messages: list[dict],temperature: float = 0.2 ) -> str:
     try:
         response = client.responses.create(

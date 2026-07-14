@@ -1,11 +1,12 @@
-from openai import OpenAI
-
+# from openai import OpenAI
+from langfuse.openai import openai
 from app.config import settings
 from app.rag.prompts import RAG_SYSTEM_PROMPT
 
-client = OpenAI(api_key=settings.openai_api_key,
-                base_url=settings.openai_api_base_url,
-                )
+client = openai.OpenAI(
+    api_key=settings.openai_api_key,
+    base_url=settings.openai_api_base_url,
+)
 
 def build_context(chunks: list[dict]) -> str:
     parts = []
