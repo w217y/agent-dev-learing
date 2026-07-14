@@ -1,4 +1,17 @@
 services:
+  api:
+    build: .
+    container_name: enterprise_ops_agent_api
+    ports:
+      - "8000:8000"
+    env_file:
+      - .env
+    depends_on:
+      - postgres
+      - redis
+    volumes:
+      - ./data:/app/data
+
   postgres:
     image: pgvector/pgvector:pg16
     container_name: agent_rag_postgres
@@ -10,6 +23,12 @@ services:
       - "5432:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
+
+  redis:
+    image: redis:7
+    container_name: enterprise_ops_agent_redis
+    ports:
+      - "6379:6379"
 
 volumes:
   postgres_data:
