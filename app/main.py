@@ -6,21 +6,26 @@ from fastapi import FastAPI,Request
 from fastapi.responses import JSONResponse
 
 from app.db.init_db import init_db
+from app.db.business_seed import seed_business_tables
+
 from app.api.routes_chat import router as chat_router
 from app.api.routes_extract import router as extract_router
 from app.api.routes_tools import router as tools_router
 from app.api.routes_documents import router as documents_router
 from app.api.routes_rag import router as rag_router
-
+from app.api.routes_agent import router as agent_router
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     init_db()
+    seed_business_tables()
     yield
 
 app = FastAPI(title="Agent Dev RAG API",
               lifespan=lifespan,
               )
+
+
 
 
 @app.exception_handler(RuntimeError)
@@ -35,11 +40,15 @@ async def health_check():
     return {"status":"ok"}
 
 
+
+
 app.include_router(chat_router)
 app.include_router(extract_router)
 app.include_router(tools_router)
 app.include_router(documents_router)
 app.include_router(rag_router)
+app.include_router(agent_router)
+
 
 if __name__ == "__main__":
     uvicorn.run(

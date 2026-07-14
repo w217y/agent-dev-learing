@@ -1,4 +1,4 @@
-from typing import Any, Literal
+from typing import Any, Literal,TypedDict
 from typing_extensions import TypedDict
 
 Intent = Literal[
@@ -7,7 +7,6 @@ Intent = Literal[
     "create_ticket",
     "draft_email",
     "smalltalk",
-    "unknown",
 ]
 
 class AgentState(TypedDict, total=False):
@@ -33,4 +32,7 @@ class AgentState(TypedDict, total=False):
 
     #observer
     steps: list[str]
+    
+    router_reason: str
+    router_confidence: float    
 
