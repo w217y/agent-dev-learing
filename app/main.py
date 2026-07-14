@@ -5,6 +5,9 @@ from contextlib import asynccontextmanager
 from fastapi import FastAPI,Request
 from fastapi.responses import JSONResponse
 
+from app.core.logging import setup_logging
+
+
 from app.db.init_db import init_db
 from app.db.business_seed import seed_business_tables
 
@@ -15,6 +18,8 @@ from app.api.routes_documents import router as documents_router
 from app.api.routes_rag import router as rag_router
 from app.api.routes_agent import router as agent_router
 
+setup_logging()
+
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     init_db()
@@ -24,8 +29,6 @@ async def lifespan(app: FastAPI):
 app = FastAPI(title="Agent Dev RAG API",
               lifespan=lifespan,
               )
-
-
 
 
 @app.exception_handler(RuntimeError)
