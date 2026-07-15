@@ -1,0 +1,60 @@
+name: CI
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    services:
+      postgres:
+        image: pgvector/pgvector:pg16
+        env:
+          POSTGRES_USER: agent
+          POSTGRES_PASSWORD: agent
+          POSTGRES_DB: agent_rag
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U agent -d agent_rag"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+    env:
+      OPENAI_API_KEY: dummy
+      OPENAI_MODEL: dummy
+      OPENAI_API_BASE_URL: http://127.0.0.1:9999
+      LLM_TIMEOUT_SECONDS: 5
+
+      EMBEDDING_PROVIDER: local
+      EMBEDDING_MODEL: BAAI/bge-small-zh-v1.5
+      EMBEDDING_DIM: 512
+      EMBEDDING_DEVICE: cpu
+
+      DATABASE_URL: postgresql+psycopg://agent:agent@localhost:5432/agent_rag
+      UPLOAD_DIR: data/uploads
+      TOP_K: 5
+      MIN_RAG_SCORE: 0.45
+      MAX_INPUT_LENGTH: 4000
+
+      NO_PROXY: localhost,127.0.0.1,::1
+      no_proxy: localhost,127.0.0.1,::1
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Run unit tests
+        run: |
+          pytest -q tests

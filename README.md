@@ -1,360 +1,446 @@
-# Agent Dev Week 1 （version：V1）
+# Enterprise Ops Agent
 
+一个面向企业内部运营场景的 Agent 后端项目，基于 **FastAPI、LangGraph、PostgreSQL/pgvector 和 OpenAI-compatible LLM** 构建。
 
-这是一个用与学习 AI agent 后端基础能力的第一周练习项目。
+项目目标不是简单封装一个聊天接口，而是将企业 Agent 常见的工程能力串联起来：
 
-当前项目基于 FastAPI 构建，主要包含： 
+- RAG 知识库问答
+- LangGraph Agent 工作流编排
+- 安全可控的工具调用
+- SQL 白名单查询
+- 工单 / 邮件草稿生成
+- Human-in-the-loop 人工审批
+- RAG / Agent 自动化评估
+- Docker 化部署
+- CI 单元测试验证
 
-- FastAPI 后端服务
-- LLM 普通对话接口
-- LLM 流式输出接口
-- Structured Output 结构化输出接口
-- 本地工具函数
-- pytest 基础测试
+---
 
+## 项目定位
 
-> 注意：当前版本是第一周学习版本，重点是理解 LLM 后端基础工程结构，还不是完整的 Agent 框架项目。
----------
+Enterprise Ops Agent 模拟的是一个企业内部运营助手。
 
-## 项目结构
-
-```text
-agent-dev-week1/
-    app/
-        __init__.py
-        main.py
-        config.py
-        schemas.py
-        llm.py
-        tools.py
-        api/
-            __init__.py
-            routes_chat.py
-            routes_extract.py
-            routes_tools.py
-    tests/
-        test_health.py
-        test_schemas.py
-        test_tools.py
-    .env.example
-    requirements.txt
-    README.md
-```
-
-## 目录说明
-```text
-app/main.py
-```
-FastAPI应用入口，负责创建app、注册路由、定义健康检查接口和异常处理。
+它可以处理以下几类任务：
 
 ```text
-app/config.py
+1. 查询企业知识库
+2. 查询白名单范围内的业务数据
+3. 生成工单草稿
+4. 生成邮件草稿
+5. 对写操作进行人工审批确认
 ```
-负责读取环境变量，例如OpenAI API Key、模型名称、API Base URL。
+
+典型场景：
 
 ```text
-app/schemas.py
-```
-定义请求和响应的数据结构，例如聊天消息、聊天请求、结构化任务提取结果
+用户：报销政策里发票要求是什么？
+Agent：走 RAG 检索知识库，返回答案和来源。
 
-```text
-app/llm.py
-```
-封装LLM调用逻辑，包括普通聊天、结构化输出、工具schema和本地工具执行函数
+用户：帮我查一下 VIP 客户。
+Agent：走预定义 SQL 白名单查询，只执行安全查询。
 
-```text
-app/tools.py
-```
-定义本地工具函数，目前包括：
-- `calculator(expression)`：安全计算简单数学表达式
-- `get_current_time()`：获取当前服务器时间
-
-```text
-app/api/routes_chat.py
-```
-
-定义聊天相关接口：
-- `/api/chat`
-- `/api/chat/stream`
-
-```text
-app/api/routes-extract.py
-```
-
-定义结构化任务提取接口
-- `/api/extrac-task`
-
-```text
-app/api/routes-tools.py
-```
-定义工具聊天接口文件。
-当前main.py已经注册该路由，
-所以`/api/tool-chat`当前暂时不可用。
-
-```text
-tests/
-```
-存放pytest测试代码。
-
-## 环境准备
-
-### 1. 创建虚拟环境
-
-```
-python -m venv .venv
-```
-
-### 2. 激活虚拟环境
-Windows cmd
-`.venv\Scripts\activate`
-
-macos/Linux:
-`source .venv/bin/activate`
-
-### 3. 安装依赖
-`pip install -r requirements.txt`
-
-## 环境变量配置
-项目需要`.env`文件保存模型配置
-可以先复制实例文件：
-window cmd：
-`copy .env.example .env`
-
-macOS/Linux:
-`cp .env.examlpe .env`
-
-`.env.example`实例：
-```
-OPENAI_API_BASE_URL=yourbase_url_here
-OPENAI_API_KEY=your_api_key_here
-OPENAI_MODEL=gpt-5.5
-```
-你需要在`.env`中填写真实配置
-
-## 启动项目
-当前 `app/mian.py`中设置的端口是`6002`
-可以直接运行
-`python app/main.py`
-
-也可以使用uvicorn启动:
-`uvicorn app.main:app --reload --port 6002`
-
-启动后访问接口文档
-`http://127.0.0.1:6002/docs`
-
-健康检查
-`http://127.0.0.1:6002/health`
-
-## 当前可用接口
-
-1.健康检查
-
-`GET /health`
-
-实例请求
-`curl http"//127.0.0.1:6002/health`
-
-返回示例:
-```
-{
-    "status":"ok"
-}
-```
-
-2.普通聊天接口
-
-`POST /api/chat`
-
-请求示例:
-```json
-{
-  "messages": [
-    {
-      "role": "user",
-      "content": "用一句话解释什么是 AI Agent"
-    }
-  ],
-  "temperature": 0.2
-}
-```
-
-windows cmd curl 示例:
-
-```
-curl -X POST "http://127.0.0.1:6002/api/chat" -H "accept: application/json" -H "Content-Type: application/json" -d "{\"messages\":[{\"role\":\"user\",\"content\":\"用一句话解释什么是 AI Agent\"}],\"temperature\":0.2}"
-```
-
-返回示例:
-```json
-{
-  "answer": "AI Agent 是能够理解目标、调用工具并完成任务的智能程序。"
-}
-
-```
-
-3.流式聊天接口
-
-`POST /api/chat_stream`
-
-当前版本使用的是伪流式输出
-```python
-for char in text:
-    yield char
-```
-也就是说,接口会先拿到完整的模型回答,然后按字符逐步返回.
-
-请求示例:
-```cmd
-curl -X POST "http://127.0.0.1:6002/api/chat_stream" -H "accept: application/json" -H "Content-Type: application/json" -d "{\"messages\":[{\"role\":\"user\",\"content\":\"介绍一下 AI\"}],\"temperature\":0.2}"
-```
-
-4.结构化任务提接口
-
-`POST /api/extract_task`
-
-该接口用于让模型按照固定结构返回`JSON`.
-
-示例:
-```json
-{
-    "text": "帮我给财务写一封邮件，说明这张发票需要重新审核，比较紧急。"
-}
-```
-
-windows cmd curl 示例:
-```cmd
-curl -X POST "http://127.0.0.1:6002/api/extract_task" -H "accept: application/json" -H "Content-Type: application/json" -d "{\"text\":\"帮我给财务写一封邮件，说明这张发票需要重新审核，比较紧急。\"}"
-```
-
-返回示例:
-```json
-{
-  "intent": "email",
-  "summary": "给财务写邮件说明发票需要重新审核",
-  "priority": "high",
-  "needs_tool": true
-}
-```
-
-字段说明:
-
-```
-intent      任务类型，可选 question / todo / email / bug_report / unknown
-summary     任务摘要
-priority    优先级，可选 low / medium / high
-needs_tool  是否需要调用工具
-```
-
-## 当前不可用接口
-项目中虽然存在:
-
-`app/api/routes_tools.py`
-
-里面定义了:
-
-`POST /api/tool-chat`
-
-当前`app/main.py`注册了:
-```python
-from app.api.routes_tools import router as tools_router
-app.include_router(tools_router)
-```
-不过当前版本的 Tool Chat 仍然是占位实现，内部暂时复用普通聊天逻辑。
-本阶段重点是完成工具函数、工具 schema、安全边界和路由注册。
-完整 Tool Calling Loop 会在后续版本实现。
-
-
-## 本地工具函数
-当前项目实现了两个本地工具.
-
-### calculator
-
-文件位置:
-
-`app/tools.py`
-
-功能:计算简单数学表达式
-
-示例:
-```python
-calculator("2 + 3")
-# 结果：5
-```
-该工具没有使用 Python 内置的 `eval()`，而是使用 `ast.parse()` 做受限表达式解析。
-
-这样做的原因是：
-```text
-eval() 可以执行任意 Python 代码，存在安全风险。
-ast.parse() 可以限制只支持数字和指定运算符，更适合工具调用场景。
-```
-
-### get_current_time
-
-功能：获取当前服务器时间。
-
-示例：
-```
-get_current_time()
-# 返回：2026-07-09T17:30:00
-```
-## 运行测试
-
-推荐使用：
-
-`python -m pytest -q`
-
-当前测试包括：
-```
-tests/test_health.py    测试 /health 接口
-tests/test_schemas.py   测试 Pydantic 数据模型
-tests/test_tools.py     测试本地工具函数
-```
-
-## 当前项目已完成功能
-```
-1. FastAPI 后端服务
-2. /health 健康检查接口
-3. 普通 LLM 聊天接口 /chat
-4. 伪流式聊天接口 /chat_stream
-5. 结构化输出接口 /extract_task
-6. 本地工具 calculator
-7. 本地工具 get_current_time
-8. pytest 基础测试
-```
-
-## 当前项目待优化点
-
-当前版本还不是最终工程化版本，后续可以继续优化：
-
-```text
-1. 统一 API 前缀为 /api
-2. 将 /chat_stream 改为 /api/chat/stream
-3. 将 /extract_task 改为 /api/extract-task
-4. 注册 routes_tools.py，让 /api/tool-chat 可用
-5. config.py 改成 Pydantic v2 推荐写法
-6. 新增接口路径测试
-7. 补充真正的 LLM streaming
-8. 后续实现完整 Tool Calling Loop
+用户：帮我创建一个工单，反馈登录失败。
+Agent：只生成工单草稿，进入 pending approval，不直接执行真实写操作。
 ```
 
 ---
 
-## 学习重点
+## 核心能力
 
-通过这个项目，需要理解：
+### 1. RAG 知识库问答
+
+项目支持上传 `pdf`、`txt`、`md`、`markdown` 文档，并执行：
 
 ```text
-1. FastAPI 如何组织后端接口
-2. Pydantic 如何校验请求体
-3. .env 如何管理敏感配置
-4. LLM API 如何封装到单独模块
-5. Structured Output 为什么适合 Agent 路由判断
-6. Tool Calling 为什么需要安全边界
-7. pytest 如何测试接口、schema 和工具函数
-8. README 为什么也是项目交付的一部分
+文档解析 → 文本切分 → 本地 embedding → 写入 PostgreSQL/pgvector → 向量检索 → LLM 生成答案
 ```
 
+RAG 查询结果会返回：
 
-<!-- docs: verify github contribution email -->
+- `answer`：模型基于知识库生成的回答
+- `sources`：命中的文档来源
+- `debug`：检索数量、使用数量、最高分数等调试信息
 
-_Last updated: 2026-07-11_
+相关模块：
+
+```text
+app/api/routes_documents.py
+app/api/routes_rag.py
+app/rag/chunking.py
+app/rag/embeddings.py
+app/rag/retriever.py
+app/rag/generator.py
+```
+
+---
+
+### 2. LangGraph Agent 编排
+
+Agent 使用 LangGraph 编排执行流程：
+
+```text
+user_input
+  ↓
+router_node 判断 intent
+  ↓
+rag / sql / ticket / email / smalltalk
+  ↓
+final_node
+```
+
+当前支持的意图：
+
+| Intent | 说明 |
+|---|---|
+| `rag_query` | 查询知识库 |
+| `sql_query` | 查询业务数据 |
+| `create_ticket` | 生成工单草稿 |
+| `draft_email` | 生成邮件草稿 |
+| `smalltalk` | 默认说明或兜底回答 |
+
+相关模块：
+
+```text
+app/agent/graph.py
+app/agent/nodes.py
+app/agent/router.py
+app/agent/tools.py
+app/agent/memory.py
+```
+
+---
+
+### 3. 安全工具调用
+
+项目没有让 LLM 任意执行 SQL，也没有让 Agent 直接执行外部写操作。
+
+SQL 查询采用白名单：
+
+```text
+list_vip_customers
+list_pending_orders
+```
+
+写操作采用草稿 + 审批模式：
+
+```text
+生成工单草稿 / 邮件草稿
+  ↓
+approval_required = true
+approval_status = pending
+  ↓
+用户调用 approve 接口确认或拒绝
+```
+
+当前版本即使审批通过，也只会把草稿标记为 `approved`，不会真实发送邮件或创建外部工单。
+
+---
+
+## 技术栈
+
+| 方向 | 技术 |
+|---|---|
+| Web API | FastAPI, Uvicorn, Pydantic v2 |
+| Agent | LangGraph |
+| LLM | OpenAI-compatible API, Langfuse OpenAI wrapper |
+| RAG | sentence-transformers, BAAI/bge-small-zh-v1.5 |
+| Vector DB | PostgreSQL 16, pgvector |
+| Database | SQLAlchemy 2.x, psycopg 3 |
+| Test / CI | pytest, GitHub Actions |
+| Deploy | Docker, Docker Compose |
+
+---
+
+## 架构简图
+
+```text
+Client
+  ↓
+FastAPI
+  ├── Chat / Extract API
+  ├── Documents API ── load/chunk/embed ── PostgreSQL + pgvector
+  ├── RAG API ─────── retriever + generator ── LLM
+  └── Agent API ───── LangGraph router/nodes/tools
+                         ├── vector_search_tool
+                         ├── sql_query_tool
+                         ├── create_ticket_draft_tool
+                         └── draft_email_tool
+```
+
+---
+
+## 项目结构
+
+```text
+app/
+  main.py                 FastAPI 入口
+  config.py               环境变量配置
+  api/                    API 路由
+  agent/                  LangGraph Agent 编排、节点、工具、状态
+  rag/                    文档加载、切分、embedding、检索、生成
+  db/                     数据库连接、初始化、示例业务数据
+  core/                   security、tracing、logging、metrics
+
+evals/
+  rag_questions.jsonl     RAG 评估集
+  agent_tasks.jsonl       Agent 评估集
+  run_rag_eval.py         RAG 评估脚本
+  run_agent_eval.py       Agent 评估脚本
+
+scripts/
+  run_all_evals.py        汇总运行评估并生成报告
+
+tests/                    pytest 测试
+Dockerfile
+docker-compose.yml
+.github/workflows/ci.yml
+```
+
+---
+
+## 快速开始
+
+### 1. 准备环境变量
+
+复制环境变量文件：
+
+```cmd
+copy .env.example .env
+```
+
+根据实际环境填写 `.env`：
+
+```env
+OPENAI_API_KEY=your_api_key
+OPENAI_MODEL=gpt-5.5
+OPENAI_API_BASE_URL=http://127.0.0.1:8080/v1
+LLM_TIMEOUT_SECONDS=60
+
+EMBEDDING_PROVIDER=local
+EMBEDDING_MODEL=BAAI/bge-small-zh-v1.5
+EMBEDDING_DIM=512
+EMBEDDING_DEVICE=cpu
+
+DATABASE_URL=postgresql+psycopg://agent:agent@localhost:5432/agent_rag
+UPLOAD_DIR=data/uploads
+TOP_K=5
+MIN_RAG_SCORE=0.45
+MAX_INPUT_LENGTH=4000
+
+NO_PROXY=localhost,127.0.0.1,::1,host.docker.internal
+no_proxy=localhost,127.0.0.1,::1,host.docker.internal
+```
+
+如果本机开启了全局代理，建议保留 `NO_PROXY`，避免本地 API 或本地 LLM 请求被代理劫持。
+
+---
+
+### 2. 启动数据库
+
+```cmd
+docker compose up -d postgres
+```
+
+---
+
+### 3. 安装依赖
+
+```cmd
+python -m venv .venv
+.venv\Scripts\activate
+pip install -r requirements.txt
+```
+
+---
+
+### 4. 启动 API
+
+```cmd
+python app/main.py
+```
+
+默认地址：
+
+```text
+http://127.0.0.1:6002
+```
+
+健康检查：
+
+```cmd
+curl http://127.0.0.1:6002/health
+```
+
+接口文档：
+
+```text
+http://127.0.0.1:6002/docs
+```
+
+也可以使用 Docker 启动完整服务：
+
+```cmd
+docker compose up --build
+```
+
+Docker 方式下 API 地址：
+
+```text
+http://127.0.0.1:8000
+```
+
+---
+
+## 评估方式
+
+项目提供两类评估脚本。
+
+### RAG Eval
+
+```cmd
+python -m evals.run_rag_eval
+```
+
+评估内容：
+
+- 回答是否包含预期关键词
+- source 是否命中预期文档
+- 无资料问题是否正确拒答
+- 平均延迟
+
+---
+
+### Agent Eval
+
+```cmd
+python -m evals.run_agent_eval
+```
+
+评估内容：
+
+- intent 路由是否正确
+- tool 调用是否正确
+- approval_required 是否符合预期
+- unsafe case 是否拒绝执行
+- 平均延迟
+
+---
+
+### 汇总评估报告
+
+```cmd
+python -m scripts.run_all_evals
+```
+
+报告输出：
+
+```text
+evals/eval_report.md
+```
+
+说明：Eval 会真实依赖 LLM、embedding、数据库和已入库文档，不建议放进普通 CI 作为必跑任务。
+
+---
+
+## 测试与 CI
+
+本地运行测试：
+
+```cmd
+pytest -q tests
+```
+
+CI 配置文件：
+
+```text
+.github/workflows/ci.yml
+```
+
+CI 当前主要验证：
+
+- Python 依赖能安装
+- PostgreSQL/pgvector service 能启动
+- 单元测试能通过
+- 路由、schema、工具、安全边界没有被破坏
+
+普通 CI 不跑真实 LLM 和真实 embedding。真实效果通过本地 Eval 或后续手动 workflow 验证。
+
+---
+
+## 安全边界
+
+### 输入安全
+
+`app/core/security.py` 会拦截高风险输入，例如：
+
+```text
+删除所有、清空、drop table、truncate、绕过审批、直接发送、api key、secret key、数据库密码等
+```
+
+### 文件安全
+
+只允许上传：
+
+```text
+pdf, txt, md, markdown
+```
+
+### SQL 安全
+
+不允许 LLM 生成任意 SQL，只能执行预定义 `SAFE_SQL_MAP`。
+
+### 写操作安全
+
+邮件、工单等写操作只生成草稿，并进入 `pending approval`。当前版本不会真实发送邮件或创建外部工单。
+
+### RAG 拒答
+
+当检索不到超过 `MIN_RAG_SCORE` 的有效 chunk 时，系统返回：
+
+```text
+根据当前知识库资料，无法确认。
+```
+
+---
+
+## 当前限制
+
+- Agent memory 当前是简单 run 状态存储，不是生产级持久化会话记忆。
+- 工单和邮件只生成草稿，没有接入真实外部系统。
+- SQL 查询依赖白名单和规则匹配，不支持复杂 Text-to-SQL。
+- RAG 文档管理能力较基础，暂缺文档删除、重建索引、版本管理。
+- Agent Router 依赖 LLM structured output，需要模型服务兼容对应接口。
+- CI 只验证离线单元测试，不验证真实 LLM 效果。
+- Redis 在 docker-compose 中预留，但当前核心逻辑尚未强依赖 Redis。
+
+---
+
+## 后续优化方向
+
+- 统一封装 LLM Client，集中处理 timeout、proxy bypass、错误日志和重试。
+- 增加 retrieval-only eval，把 RAG 检索评估和 LLM 生成评估拆开。
+- 增加 Agent Router fallback，当 LLM Router 不可用时走规则兜底。
+- 将 Agent run、approval record、audit log 持久化到数据库。
+- 增加用户体系、权限控制、API token、限流和审计日志。
+- 增强 RAG 文档管理：列表、删除、重新索引、chunk 查看、按文档过滤。
+- 增加 API smoke test、Docker build test、手动 eval workflow。
+
+---
+
+## 项目亮点
+
+这个项目展示了一个企业 Agent 后端从原型到工程化的关键路径：
+
+```text
+FastAPI API
+  + RAG 知识库
+  + LangGraph Agent
+  + 安全工具调用
+  + Human Approval
+  + Eval 评估
+  + Docker 部署
+  + CI 测试
+```
+
+它可以作为 AI Agent 后端工程化学习项目，也可以继续扩展成企业内部知识问答与运营自动化助手。
+````

@@ -12,6 +12,7 @@ logger = logging.getLogger(__name__)
 client = openai.OpenAI(
     api_key=settings.openai_api_key,
     base_url=settings.openai_api_base_url,
+    timeout=settings.llm_timeout_seconds,
 )
 def chat_completion(messages: list[dict],temperature: float = 0.2 ) -> str:
     try:

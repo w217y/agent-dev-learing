@@ -6,6 +6,7 @@ from app.rag.prompts import RAG_SYSTEM_PROMPT
 client = openai.OpenAI(
     api_key=settings.openai_api_key,
     base_url=settings.openai_api_base_url,
+    # timeout=settings.llm_timeout_seconds,
 )
 
 def build_context(chunks: list[dict]) -> str:

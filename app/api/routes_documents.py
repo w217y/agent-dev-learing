@@ -10,11 +10,18 @@ from app.db.session import engine
 from app.rag.loaders import load_document
 from app.rag.chunking import split_text
 from app.rag.embeddings import embed_texts
+from app.core.security import validate_file_type
 
 router = APIRouter(prefix="/api/documents",tags=["documents"])
 
 @router.post("/upload")
 async def upload_document(file: UploadFile = File(...)):
+
+    try:
+        validate_file_type(file.filename)
+    except Exception as exc:
+        raise HTTPException(status_code=400, detail=str(exc))
+
     os.makedirs(settings.upload_dir,exist_ok=True)
 
     file_path = os.path.join(settings.upload_dir,file.filename)

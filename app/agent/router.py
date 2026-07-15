@@ -10,6 +10,7 @@ from langfuse.openai import openai
 client = openai.OpenAI(
     api_key=settings.openai_api_key,
     base_url=settings.openai_api_base_url,
+    timeout=settings.llm_timeout_seconds,
 )
 
 class RouteDecision(BaseModel):

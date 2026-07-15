@@ -1,3 +1,4 @@
+import logging
 import uuid
 from fastapi import APIRouter, HTTPException
 from pydantic import BaseModel, Field
@@ -8,6 +9,11 @@ from app.agent.memory import (
     get_run,
     update_run,
 )
+from app.core.security import validate_user_input
+
+from app.core.tracing import trace_step
+
+logger = logging.getLogger(__name__)
 
 router = APIRouter(prefix="/api/agent",tags=["agent"])
 
@@ -22,15 +28,34 @@ class AgentApproveRequest(BaseModel):
 
 @router.post("/chat")
 async def agent_chat(request: AgentChatRequest):
+    try:
+        validate_user_input(request.message)
+    except ValueError as exc:
+        raise HTTPException(status_code=400, detail=str(exc))
+    
     run_id = str(uuid.uuid4())
 
-    result = agent_graph.invoke({
-        "user_input": request.message,
-        "steps": [],
-    })
+    with trace_step(
+        run_id,
+        "agent_chat",
+        metadata={"message": request.message}
+    ):
+        result = agent_graph.invoke({
+            "user_input": request.message,
+            "steps": [],
+        })
 
     result["run_id"] = run_id
     save_run(run_id,result)
+
+    logger.info(
+        "agent_chat_completed",
+        extra={
+            "run_id": run_id,
+            "steps": result.get("steps", []),
+            "intent": result.get("intent"),
+        },
+    )
 
     return result
 
@@ -62,7 +87,7 @@ async def approve_action(request: AgentApproveRequest):
         "state": state,
     }
 
-@router.post("/runs/{run_id}")
+@router.get("/runs/{run_id}")
 async def get_agent_run(run_id: str):
 
     state = get_run(run_id)

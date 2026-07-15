@@ -1,10 +1,15 @@
+from dotenv import load_dotenv
+
 from pydantic_settings import BaseSettings,SettingsConfigDict
+
+load_dotenv()
 
 class Settings(BaseSettings):
     # Chat LLM 配置
     openai_api_key: str
     openai_model: str = "gpt-5.5"
-    openai_api_base_url: str = "http://127.0.0.1:8080"
+    openai_api_base_url: str = "http://127.0.0.1:8080/v1"
+    llm_timeout_seconds: float = 60.0
 
     # Embedding 配置
     embedding_provider: str = "local"
@@ -23,5 +28,7 @@ class Settings(BaseSettings):
         env_file_encoding="utf-8",
         extra="ignore"
     )
+
+    max_input_length: int = 4000
 
 settings = Settings()
