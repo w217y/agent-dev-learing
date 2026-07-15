@@ -16,6 +16,8 @@ venv/
 *.key
 credentials.json
 
+evals/*.jsonl
+evals/*.md
 
 # Pytest
 .pytest_cache/
